@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: actuator-demo
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/actuator-demo
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  output:
+    ansi:
+#      enabled: always
+
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
+
+  config:
+    import: optional:file:external.yaml
+
+server:
+  port: 9000
+#  shutdown: graceful
+
+logging:
+  level:
+    ROOT: info
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState, rabbit, mongo, db, active
+        liveness:
+          include: livenessState, rabbit, diskSpace
+
+
+rbaul:
+  actuator:
+    active-state: true
